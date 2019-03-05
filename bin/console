@@ -1,0 +1,31 @@
+#!/usr/bin/env php
+<?php
+$paths = [
+    __DIR__ . "/../autoload.php",
+    __DIR__ . "/../vendor/autoload.php",
+    __DIR__ . "/../../vendor/autoload.php",
+    __DIR__ . "/../../../vendor/autoload.php",
+    __DIR__ . "/../../../../vendor/autoload.php",
+];
+
+foreach ($paths as $path) {
+    if (file_exists($path)) {
+        require_once($path);
+        break;
+    }
+}
+
+$version = '0.0.1';
+
+use Symfony\Component\Console\Application;
+
+
+$application = new Application();
+$application->setName("SilverStripe Upgrader");
+$application->setVersion($version);
+
+
+$application->add(new SilverStripers\CompareSites\Command\CompareCommand());
+
+
+$application->run();
