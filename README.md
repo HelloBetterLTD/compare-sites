@@ -15,3 +15,4 @@ Then it checks for the server's response code and takes screenshots of each of t
 
 The tools uses puppeteer to generate screenshots for each of the page. Make sure you have installed it. 
 [https://www.npmjs.com/package/puppeteer](https://www.npmjs.com/package/puppeteer)
+ 
