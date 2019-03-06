@@ -1,0 +1,44 @@
+{% extends "Base.html" %}
+
+{% block content %}
+
+    <table>
+        <tr>
+            <td class="success-bg"><a href="#success">{{ Success|length }} Pages passed</a></td>
+        </tr>
+        <tr>
+            <td class="error-bg"><a href="#errors">{{ Errors|length }} Errors found</a></td>
+        </tr>
+    </table>
+
+    {% if Errors|length > 0 %}
+        <table id="errors">
+            <tr>
+                <th>URL</th>
+                <th>Error Code</th>
+            </tr>
+            {% for error in Errors %}
+            <tr>
+                <td>{{ error.site.getURL }}</td>
+                <td>{{ error.site.getResponseCode }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    {% if Errors|length > 0 %}
+        <table id="success">
+            <tr>
+                <th>URL</th>
+                <th>Error Code</th>
+            </tr>
+            {% for page in Success %}
+            <tr>
+                <td>{{ page.site.getURL }}</td>
+                <td>{{ page.site.getResponseCode }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+
+{% endblock %}

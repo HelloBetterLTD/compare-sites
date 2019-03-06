@@ -10,17 +10,21 @@
 namespace SilverStripers\CompareSites\Fetch;
 
 
-use SilverStripers\CompareSites\Command\CompareCommand;
 use SilverStripers\CompareSites\Helper\Cache;
 use SilverStripers\CompareSites\Helper\CrawlPage;
 
 class FetchPages
 {
 
+
+	const MIRROR = 'MIRROR';
+	const SITE = 'SITE';
+
 	private $url = null;
 	private $output = null;
 	private $depth = null;
-	private $type = 'against';
+	private $type = self::MIRROR;
+
 
 	public function __construct($url, $output = null)
 	{
@@ -54,9 +58,9 @@ class FetchPages
 		if($this->output) {
 			$this->output->writeln('Fetching ' . $link);
 		}
-		if(!Cache::has_fetched($link, 'against')) {
-			$crawlPage = new CrawlPage($link, $this->output, $this->type == 'against' ? CompareCommand::$against_base : CompareCommand::$site_base);
-			Cache::set_fetched($link, 'against', $crawlPage);
+		if(!Cache::has_fetched($link, $this->type)) {
+			$crawlPage = new CrawlPage($link, $this->output, $this->type == FetchPages::MIRROR ? Cache::get_mirror_domain() : Cache::get_domain());
+			Cache::set_fetched($link, $this->type, $crawlPage);
 			if ($links = $crawlPage->getLinks()) {
 				$childD = $d + 1;
 				foreach ($links as $childLink) {
@@ -65,7 +69,6 @@ class FetchPages
 					}
 				}
 			}
-
 		}
 	}
 

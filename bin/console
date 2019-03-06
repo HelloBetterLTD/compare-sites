@@ -26,6 +26,7 @@ $application->setVersion($version);
 
 
 $application->add(new SilverStripers\CompareSites\Command\CompareCommand());
+$application->add(new SilverStripers\CompareSites\Command\CheckErrorPagesCommand());
 
 
 $application->run();

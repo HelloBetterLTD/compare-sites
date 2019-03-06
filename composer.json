@@ -19,7 +19,8 @@
     "spatie/browsershot": "3.26.2",
     "symfony/dom-crawler": "v4.2.4",
     "symfony/css-selector": "v4.2.4",
-    "vajiral/php-image-compare": "1.0.1"
+    "vajiral/php-image-compare": "1.0.1",
+    "twig/twig": "v2.6.2"
   },
   "bin": [
     "bin/compare-sites"

@@ -1,0 +1,99 @@
+{% extends "Base.html" %}
+
+{% block content %}
+
+    <table>
+        <tr>
+            <td class="success-bg"><a href="#success">{{ Success|length }} Pages passed</a></td>
+        </tr>
+        <tr>
+            <td class="error-bg"><a href="#errors">{{ Errors|length }} Errors found</a></td>
+        </tr>
+        <tr>
+            <td class="warning-bg"><a href="#warnings">{{ Warnings|length }} Warnings</a></td>
+        </tr>
+        <tr>
+            <td class="not-found-bg"><a href="#not-founds">{{ NotFounds|length }} Pages not found</a></td>
+        </tr>
+    </table>
+
+    {% if Errors|length > 0 %}
+        <table id="errors">
+            <tr>
+                <th>URL</th>
+                <th>Error Code</th>
+                <th>Output</th>
+            </tr>
+            {% for error in Errors %}
+                <tr>
+                    <td>{{ error.site.getURL }}</td>
+                    <td>{{ error.site.getResponseCode }}</td>
+                    <td>
+                        <pre>{{ error.site.getBody }}</pre>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+
+    {% if Warnings|length > 0 %}
+        <table id="warnings">
+            <tr>
+                <th>URL</th>
+                <th>Original Image</th>
+                <th>Site Image</th>
+            </tr>
+            {% for error in Warnings %}
+                <tr>
+                    <td>{{ error.site.getURL }}</td>
+                    <td>
+                        <img src="{{ error.against.imgPath }}" />
+                    </td>
+                    <td>
+                        <img src="{{ error.site.imgPath }}" />
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if NotFounds|length > 0 %}
+        <table id="not-founds">
+            <tr>
+                <th>Original URL</th>
+                <th>Site URL</th>
+            </tr>
+            {% for error in NotFounds %}
+                <tr>
+                    <td>{{ error.against.getURL }}</td>
+                    <td>{{ error.site.getURL }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+
+    {% if Success|length > 0 %}
+        <table id="success">
+            <tr>
+                <th>URL</th>
+                <th>Original Image</th>
+                <th>Site Image</th>
+            </tr>
+            {% for page in Success %}
+            <tr>
+                <td>{{ page.site.getURL }}</td>
+                <td>
+                    <img src="{{ page.against.imgPath }}" />
+                </td>
+                <td>
+                    <img src="{{ page.site.imgPath }}" />
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+
+{% endblock %}

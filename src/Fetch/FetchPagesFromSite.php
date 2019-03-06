@@ -10,19 +10,16 @@
 namespace SilverStripers\CompareSites\Fetch;
 
 
-use SilverStripers\CompareSites\Command\CompareCommand;
 use SilverStripers\CompareSites\Helper\Cache;
 use SilverStripers\CompareSites\Helper\CrawlPage;
 
 class FetchPagesFromSite
 {
-	private $url = null;
 	private $output = null;
 	private $type = 'site';
 
-	public function __construct($url, $output = null)
+	public function __construct($output = null)
 	{
-		$this->url = $url;
 		$this->output = $output;
 	}
 
@@ -41,8 +38,8 @@ class FetchPagesFromSite
 	{
 		$cache = Cache::get_cache();
 		foreach ($cache as $url => $item) {
-			$link = str_replace(CompareCommand::$against_base, CompareCommand::$site_base, $url);
-			$crawlPage = new CrawlPage($link, $this->output, $this->type == 'against' ? CompareCommand::$against_base : CompareCommand::$site_base);
+			$link = str_replace(Cache::get_mirror_domain(), Cache::get_domain(), $url);
+			$crawlPage = new CrawlPage($link, $this->output, $this->type == FetchPages::MIRROR ? Cache::get_mirror_domain() : Cache::get_domain());
 			Cache::set_fetched($url, 'site', $crawlPage);
 		}
 	}

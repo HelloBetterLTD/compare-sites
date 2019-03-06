@@ -11,7 +11,9 @@ namespace SilverStripers\CompareSites\Helper;
 
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
+use Spatie\Browsershot\Browsershot;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -40,9 +42,16 @@ class CrawlPage
 	public function crawl()
 	{
 		$client = new Client();
-		$this->response = $client->get($this->url);
-		if($this->response->getStatusCode() == 200) {
-			$this->body = $this->response->getBody()->getContents();
+		try{
+			$this->response = $client->get($this->url);
+			if($this->response->getStatusCode() == 200) {
+				$this->body = $this->response->getBody()->getContents();
+			}
+		} catch(RequestException $exception) {
+			if ($exception->hasResponse()) {
+				$this->response = $exception->hasResponse();
+			}
+		} catch (\Exception $e) {
 		}
 		return $this;
 
@@ -58,9 +67,14 @@ class CrawlPage
 		return $this->body;
 	}
 
+	public function getURL()
+	{
+		return $this->url;
+	}
+
 	public function getResponseCode()
 	{
-		return $this->response->getStatusCode();
+		return $this->response ? $this->response->getStatusCode() : -1;
 	}
 
 	public function getLinks()
@@ -130,6 +144,24 @@ class CrawlPage
 		return $link;
 	}
 
+	public function generateImage()
+	{
+		$path = $this->imgAbsolutePath();
+		Browsershot::html($this->getBody())
+			->fullPage()
+			->setDelay(2000)
+			->save($path);
+		return $path;
+	}
 
+	public function imgPath()
+	{
+		return './img/' . md5($this->url) . '.png';
+	}
+
+	public function imgAbsolutePath()
+	{
+		return Cache::get_report_path() . '/img/' . md5($this->url) . '.png';
+	}
 
 }
