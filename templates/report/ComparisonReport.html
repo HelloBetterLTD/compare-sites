@@ -26,10 +26,10 @@
             </tr>
             {% for error in Errors %}
                 <tr>
-                    <td>{{ error.site.getURL }}</td>
-                    <td>{{ error.site.getResponseCode }}</td>
+                    <td>{{ error.SITE.getURL }}</td>
+                    <td>{{ error.SITE.getResponseCode }}</td>
                     <td>
-                        <pre>{{ error.site.getBody }}</pre>
+                        <pre>{{ error.SITE.getBody }}</pre>
                     </td>
                 </tr>
             {% endfor %}
@@ -46,12 +46,12 @@
             </tr>
             {% for error in Warnings %}
                 <tr>
-                    <td>{{ error.site.getURL }}</td>
+                    <td>{{ error.SITE.getURL }}</td>
                     <td>
-                        <img src="{{ error.against.imgPath }}" />
+                        <img src="{{ error.MIRROR.imgPath }}" />
                     </td>
                     <td>
-                        <img src="{{ error.site.imgPath }}" />
+                        <img src="{{ error.SITE.imgPath }}" />
                     </td>
                 </tr>
             {% endfor %}
@@ -66,8 +66,8 @@
             </tr>
             {% for error in NotFounds %}
                 <tr>
-                    <td>{{ error.against.getURL }}</td>
-                    <td>{{ error.site.getURL }}</td>
+                    <td>{{ error.MIRROR.getURL }}</td>
+                    <td>{{ error.SITE.getURL }}</td>
                 </tr>
             {% endfor %}
         </table>
@@ -83,12 +83,12 @@
             </tr>
             {% for page in Success %}
             <tr>
-                <td>{{ page.site.getURL }}</td>
+                <td>{{ page.SITE.getURL }}</td>
                 <td>
-                    <img src="{{ page.against.imgPath }}" />
+                    <img src="{{ page.MIRROR.imgPath }}" />
                 </td>
                 <td>
-                    <img src="{{ page.site.imgPath }}" />
+                    <img src="{{ page.SITE.imgPath }}" />
                 </td>
             </tr>
             {% endfor %}
