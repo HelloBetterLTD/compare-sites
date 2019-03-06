@@ -49,7 +49,7 @@ class CrawlPage
 			}
 		} catch(RequestException $exception) {
 			if ($exception->hasResponse()) {
-				$this->response = $exception->hasResponse();
+				$this->response = $exception->getResponse();
 			}
 		} catch (\Exception $e) {
 		}
